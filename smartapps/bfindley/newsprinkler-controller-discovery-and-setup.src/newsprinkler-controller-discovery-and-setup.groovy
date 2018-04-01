@@ -20,7 +20,7 @@ definition(
     namespace: "bfindley",
     author: "bfindley",
     description: "Allows you to control you Sprinklers with Smartthings",
-    category: "SmartThings Labs",
+    category: "My Apps",
     singleInstance: true,
 		iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
 		iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png",
