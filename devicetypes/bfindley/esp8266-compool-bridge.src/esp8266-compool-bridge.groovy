@@ -34,6 +34,7 @@ metadata {
      	attribute "aux3", "string" //on/off
        	attribute "aux4", "string" //on/off
        	attribute "aux5", "string" //on/off
+	attribute "aux6", "string" //on/off
        	attribute "poolcurrenttemp", "string" 
        	attribute "spacurrenttemp", "string" 
         attribute "servicemode", "string"
@@ -48,6 +49,7 @@ metadata {
         attribute "aux3name", "string"
         attribute "aux4name", "string"
         attribute "aux5name", "string"
+	attribute "aux6name", "string"
  
        // Custom commands
         command "subscribe"
@@ -64,6 +66,8 @@ metadata {
         command "aux4off"
         command "aux5on"
         command "aux5off"
+        command "aux6on"
+        command "aux6off"
         command "poolon"
         command "pooloff"
         command "spaon"
