@@ -6,6 +6,7 @@
 // If html_debug is commented out then html debugging is not available.
 
 #define html_debug 1
+//#define flip_display 1
 
 #include <FS.h>                   //this needs to be first
 #include <ESP8266WiFi.h>
@@ -135,7 +136,7 @@ void saveConfigCallback() {
 //Display state variables
 int displaystate = 0;
 int manualmodezone = 0;
-int manualmodetime = 30;
+int manualmodetime = 240;
 boolean switchedge = false;
 boolean autorun = false;
 int switchvalue = 0;
@@ -717,7 +718,9 @@ void debugger(String debugmessage) {
 void configModeCallback (WiFiManager *myWiFiManager) {
   display_setup();
   //display.init();
-  //display.flipScreenVertically();
+  #ifdef flip_display
+  display.flipScreenVertically();
+  #endif
   //display.setContrast(255);
   String softIp =  String(WiFi.softAPIP()[0]) + "." + String(WiFi.softAPIP()[1]) + "." + String(WiFi.softAPIP()[2]) + "." + String(WiFi.softAPIP()[3]);
   display.clear();
@@ -894,7 +897,9 @@ void display_setup() {
   // Initialising the UI will init the display too.
   display.init();
 
-//  display.flipScreenVertically();// flipped
+  #ifdef flip_display
+  display.flipScreenVertically();// flipped
+  #endif
   display.setFont(ArialMT_Plain_16);
   display.setTextAlignment(TEXT_ALIGN_LEFT);
   displaystate = 0;
@@ -931,7 +936,9 @@ void displaypaintOff() {
 }
 
 void displaypaintAuto(int displayzone, int timeremaining, int totaltime) {
-  //display.flipScreenVertically();//flipper
+  #ifdef flip_display
+  display.flipScreenVertically();//flipper
+  #endif
   display.setFont(ArialMT_Plain_16);
   display.setTextAlignment(TEXT_ALIGN_LEFT);
   display.clear();
@@ -952,7 +959,9 @@ void displaypaintAuto(int displayzone, int timeremaining, int totaltime) {
 
 int displaypaintManualOn(int displayzone) {
   //  display.init();
-//  display.flipScreenVertically();//flipper
+  #ifdef flip_display
+  display.flipScreenVertically();//flipper
+  #endif
   display.setFont(ArialMT_Plain_16);
   display.setTextAlignment(TEXT_ALIGN_LEFT);
   display.clear();
@@ -1170,7 +1179,9 @@ void setup()
 
   display_setup();
   //display.init();
-  //display.flipScreenVertically();
+  #ifdef flip_display
+  display.flipScreenVertically();
+  #endif
   //display.setContrast(255);
   display.clear();
   display.setFont(ArialMT_Plain_16);
