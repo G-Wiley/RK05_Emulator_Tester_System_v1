@@ -130,10 +130,10 @@ preferences {
             state "offline", label:'${name}', icon:"st.Health & Wellness.health2", backgroundColor:"#ff0000"
         }
         standardTile("aux1", "device.aux1", canChangeIcon: false) {
-//            state "on", label:'aux1', action:"aux1off", icon:"st.samsung.da.RC_ic_power", backgroundColor:"#79b821", nextState:"turningOff"
-//            state "off", label:'aux1', action:"aux1on", icon:"st.samsung.da.RC_ic_power", backgroundColor:"#ffffff", nextState:"turningOn"
-             state "on", label:'aux1', action:"aux1off", icon:"st.samsung.da.RC_ic_power", backgroundColor:"#79b821"
-            state "off", label:'aux1', action:"aux1on", icon:"st.samsung.da.RC_ic_power", backgroundColor:"#ffffff"
+            state "on", label:'aux1', action:"aux1off", icon:"st.samsung.da.RC_ic_power", backgroundColor:"#79b821", nextState:"turningOff"
+            state "off", label:'aux1', action:"aux1on", icon:"st.samsung.da.RC_ic_power", backgroundColor:"#ffffff", nextState:"turningOn"
+//             state "on", label:'aux1', action:"aux1off", icon:"st.samsung.da.RC_ic_power", backgroundColor:"#79b821"
+//            state "off", label:'aux1', action:"aux1on", icon:"st.samsung.da.RC_ic_power", backgroundColor:"#ffffff"
             state "turningOn", label:'sending', action:"aux1off", icon:"st.samsung.da.RC_ic_power", backgroundColor:"#79b821", nextState:"turningOff"
             state "turningOff", label:'sending', action:"aux1on", icon:"st.samsung.da.RC_ic_power", backgroundColor:"#ffffff", nextState:"turningOn"
             state "offline", label:'${name}', icon:"st.samsung.da.RC_ic_power", backgroundColor:"#ff0000"
@@ -309,13 +309,15 @@ if (headerString?.contains("SID: uuid:")) {
     	//log.trace body[deviceName]["mode"]
 //    	log.debug "new ${deviceSetting} for ${deviceName} is ${newSetting}"
 if (deviceSetting == "currenttemp"){displayyesno = false
+//log.trace deviceName+deviceSetting
+//log.trace newSetting
 }
 //log.debug "Is this Displayed? ${displayyesno}"
 
     	def evt1 = createEvent(name: deviceName+deviceSetting, value: newSetting, descriptionText: "${deviceName+deviceSetting} set to ${newSetting}", displayed: displayyesno)
-    }
+   
      	result << evt1
- 
+  }
 }
 def lights = '| He | So | Se |'
 //log.debug body["heaterstate"]["mode"]
@@ -403,17 +405,18 @@ def aux1on() {
 //    runIn(3, poll)
 //    sendEvent(name: "aux1", value: "turningOn",  displayed: false)
 //	log.debug device.currenState("aux1")
-if (device.currentValue("servicemode") == "off"){
+//if (device.currentValue("servicemode") == "off"){
 	on('aux1')
-}}
+//}
+}
 
 def aux1off() {
 //    runIn(3, poll)
 //    sendEvent(name: "aux1", value: "turningOff",  displayed: false)
 //	log.debug device.currentState("aux1")
-if (device.currentValue("servicemode") == "off"){
+//if (device.currentValue("servicemode") == "off"){
 	off('aux1')
-    }
+//    }
 }
 
 def aux2on() {
