@@ -6,12 +6,9 @@
  * Derived from: 
  * ESP8266 Switch
  *
- * Author: Jacob Schreiver 
- * Date: 2016-02-16
- * Derived from Wemo Switch 
- * 	- Author: Juan Risso (SmartThings)
- *  - Date: 2015-10-11 
- * 
+ * Author: Brian Findley 
+ * Date: 04/19/2020
+ * Version 19
  */
 
 import groovy.json.JsonSlurper
@@ -19,7 +16,7 @@ import groovy.json.JsonSlurper
 
 metadata {
  	definition (name: "ESP8266_Compool_Bridge", namespace: "bfindley", author: "Brian Findley") {
-        capability "Switch"
+        //capability "Switch"
         capability "Thermostat"
         capability "Temperature Measurement"
         capability "Polling"
@@ -34,7 +31,7 @@ metadata {
      	attribute "aux3", "string" //on/off
        	attribute "aux4", "string" //on/off
        	attribute "aux5", "string" //on/off
-	attribute "aux6", "string" //on/off
+		attribute "aux6", "string" //on/off
        	attribute "poolcurrenttemp", "string" 
        	attribute "spacurrenttemp", "string" 
         attribute "servicemode", "string"
@@ -49,7 +46,8 @@ metadata {
         attribute "aux3name", "string"
         attribute "aux4name", "string"
         attribute "aux5name", "string"
-	attribute "aux6name", "string"
+		attribute "aux6name", "string"
+		attribute "temperature" , "string"
  
        // Custom commands
         command "subscribe"
@@ -174,15 +172,17 @@ preferences {
             state "offline", label:'${name}', icon:"st.samsung.da.RC_ic_power", backgroundColor:"#ff0000"
         }
         standardTile("refresh", "device.switch", inactiveLabel: false, height: 1, width: 1, decoration: "flat") {
-            state "default", label:"", action:"refresh.refresh", icon:"st.secondary.refresh"
+            state "default", label:"Refresh", action:"refresh.refresh", icon:"st.secondary.refresh-icon"
         }
         standardTile("subscribe", "device.switch", inactiveLabel: false, height: 1, width: 1, decoration: "flat") {
-            state "default", label:"", action:"subscribe", icon:"st.secondary.refresh"
+            state "default", label:"Refresh", action:"subscribe", icon:"st.secondary.refresh-icon"
         }
-       valueTile("poolcurrenttemp", "device.poolcurrenttemp", inactiveLabel: false, height: 1, width: 2, decoration: "flat") {
+//       valueTile("poolcurrenttemp", "device.poolcurrenttemp", inactiveLabel: false, height: 1, width: 2, decoration: "flat") {
+       valueTile("poolcurrenttemp", "device.temperature", inactiveLabel: false, height: 1, width: 2, decoration: "flat") {
             state "default", label:'${currentValue}°', unit:"F"
 		}
-       valueTile("poolcurrenttemp2", "device.poolcurrenttemp", inactiveLabel: false, height: 1, width: 2, decoration: "flat") {
+//       valueTile("poolcurrenttemp2", "device.poolcurrenttemp", inactiveLabel: false, height: 1, width: 2, decoration: "flat") {
+       valueTile("poolcurrenttemp2", "device.temperature", inactiveLabel: false, height: 1, width: 2, decoration: "flat") {
             state "default", label:'${currentValue}°', unit:"F", icon:"st.Health & Wellness.health2", backgroundColor:"#79b821"
 		}
       valueTile("lights", "lights", inactiveLabel: false, height: 1, width: 2, decoration: "flat") {
@@ -251,9 +251,18 @@ main(["poolcurrenttemp2"])
 
 def installed() {
     log.debug "installed()"
-    printTitle()
-}
+//    printTitle()
+//        sendEvent([name:'temperature', value:'70', displayed:false])
+	updated();
 
+}
+def updated() {
+    log.debug "updated()"
+ 	unschedule()
+ 	runEvery15Minutes(refresh)
+ 	runIn(2, refresh)
+
+}
 
 
 // parse events into attributes
@@ -309,6 +318,11 @@ if (headerString?.contains("SID: uuid:")) {
     	//log.trace body[deviceName]["mode"]
 //    	log.debug "new ${deviceSetting} for ${deviceName} is ${newSetting}"
 if (deviceSetting == "currenttemp"){displayyesno = false
+sendEvent(name: "temperature",
+            value:  newSetting,
+            unit:   getTemperatureScale(),)
+
+
 //log.trace deviceName+deviceSetting
 //log.trace newSetting
 }
@@ -341,6 +355,8 @@ result << createEvent(name: 'lights', value: lights)
 // result << createEvent(name: "pooltemp", value: 77, descriptionText: "pool temp turned 77", displayed: true)
 
  	}
+//    sendEvent(name:"temperature", value: device.poolcurrenttemp) 
+
 //    result
 }
 
