@@ -8,7 +8,6 @@
  */
  
  // for the UI
- // testing
 preferences {
     input("zip", "text", title: "Zip Code", description: "Zip Code for Weather", required: false, defaultValue: "")
     input("oneTimer", "text", title: "Zone One", description: "Zone One Time", required: false, defaultValue: "10")
