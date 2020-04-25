@@ -16,7 +16,7 @@ import groovy.json.JsonSlurper
 
 metadata {
  	definition (name: "ESP8266_Compool_Bridge", namespace: "bfindley", author: "Brian Findley") {
-        //capability "Switch"
+        capability "Switch"
         capability "Thermostat"
         capability "Temperature Measurement"
         capability "Polling"
@@ -268,7 +268,8 @@ def updated() {
 // parse events into attributes
 def parse(description) {
 log.debug "Parsing"
-log.debug device.currentValue("servicemode")
+def servicemode2 = device.currentValue("servicemode")
+log.debug "service mode: $servicemode2"
     def msg = parseLanMessage(description)
     def headerString = msg.header
 if (headerString?.contains("/notify")){
@@ -348,7 +349,7 @@ result << createEvent(name: "servicemode", value: "off")
 result << createEvent(name: "servicemode", value: "on"
 )
 }
-log.debug lights
+log.debug "Lights: $lights"
 result << createEvent(name: 'lights', value: lights)
 
 
