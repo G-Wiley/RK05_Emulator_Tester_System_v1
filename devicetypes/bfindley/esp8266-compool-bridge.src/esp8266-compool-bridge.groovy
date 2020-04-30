@@ -242,8 +242,13 @@ main(["poolcurrenttemp2"])
 //        "poolsettemp","pooltempup", "spasettemp", "spatempup", "blank", "blank", "pooltempdown", "spatempdown", "blank", "blank", 
 //        "poolheatmode", "spaheatmode", "blank", "blank",
 //        "aux1", "aux2", "aux3", "aux4", "aux5", "refresh"])
+//        details(["poolswitch",  "poolcurrenttemp", "spaswitch", "lights",
+//        "poolsettemp","spasettemp", "poolSliderControl", "spaSliderControl",
+//        "poolheatmode", "spaheatmode", 
+//        "aux1", "aux2", "aux3", "aux4", "aux5", "aux6", "aux1name", "aux2name", "aux3name", "aux4name", "aux5name", "aux6name", "refresh"])
+
         details(["poolswitch",  "poolcurrenttemp", "spaswitch", "lights",
-        "poolsettemp","spasettemp", "poolSliderControl", "spaSliderControl",
+        "poolSliderControl", "spaSliderControl",
         "poolheatmode", "spaheatmode", 
         "aux1", "aux2", "aux3", "aux4", "aux5", "aux6", "aux1name", "aux2name", "aux3name", "aux4name", "aux5name", "aux6name", "refresh"])
     }
@@ -261,106 +266,94 @@ def updated() {
  	unschedule()
  	runEvery15Minutes(refresh)
  	runIn(2, refresh)
-
 }
-
 
 // parse events into attributes
 def parse(description) {
-log.debug "Parsing"
-def servicemode2 = device.currentValue("servicemode")
-log.debug "service mode: $servicemode2"
+	log.info "Parsing"
+	def servicemode2 = device.currentValue("servicemode")
+	log.debug "service mode: $servicemode2"
     def msg = parseLanMessage(description)
     def headerString = msg.header
-if (headerString?.contains("/notify")){
-log.debug "/notify received"
-}
- //   log.debug "Parsing '${description}'"
-if (headerString?.contains("SID: uuid:")) {
+    log.debug "headerstring: $headerString"
+	//log.debug "content type: $msg.Content-Type"
+	if (headerString?.contains("/notify")){
+		log.debug "/notify received"
+	}
+	if (headerString?.contains("SID: uuid:")) {
         def sid = (headerString =~ /SID: uuid:.*/) ? ( headerString =~ /SID: uuid:.*/)[0] : "0"
         sid -= "SID: uuid:".trim()
-
         updateDataValue("subscriptionId", sid)
  	}
 
     def result = []
     def bodyString = msg.body
     //log.debug msg
-//    log.debug bodyString
+	//log.debug bodyString
     
     if (bodyString) {
-//    	unschedule("setOffline")
+		//unschedule("setOffline")
         def slurper = new JsonSlurper()
         def body = slurper.parseText(bodyString)
         //log.debug body
         //def value = body.text() == "off" ? "off" : "on"
         //def value = body.text()
         //log.trace "Notify: BinaryState = ${value}, ${body.property.BinaryState}"
- 
-     //def eventlist = []
+     	//def eventlist = []
 
- ['pool', 'spa', 'aux1', 'aux2', 'aux3', 'aux4', 'aux5', 'aux6'].each { deviceName ->
- 	def newMode = body[deviceName]["mode"]
-//    log.debug "old mode for ${deviceName} is ${device.currentValue(deviceName)}"
-    //log.trace body[deviceName]["mode"]
-//    log.debug "new mode for ${deviceName} is ${newMode}"
-//    if (newMode != device.currentValue(deviceName)){
-    def evt1 = createEvent(name: deviceName, value: newMode, descriptionText: "${deviceName} turned ${newMode}", displayed: true)
-    result << evt1
-    
-//    }
-  
-}
-['pool', 'spa'].each { deviceName ->
- 	['settemp', 'currenttemp', 'heatmode'].each { deviceSetting ->
-    	def newSetting = body[deviceName][deviceSetting]
-        def displayyesno = true
-//    	log.debug "old ${deviceSetting} for ${deviceName} is ${device.currentValue(deviceName+deviceSetting)}"
+ 	['pool', 'spa', 'aux1', 'aux2', 'aux3', 'aux4', 'aux5', 'aux6'].each { deviceName ->
+ 		def newMode = body[deviceName]["mode"]
+		//log.debug "old mode for ${deviceName} is ${device.currentValue(deviceName)}"
     	//log.trace body[deviceName]["mode"]
-//    	log.debug "new ${deviceSetting} for ${deviceName} is ${newSetting}"
-if (deviceSetting == "currenttemp"){displayyesno = false
-sendEvent(name: "temperature",
-            value:  newSetting,
-            unit:   getTemperatureScale(),)
+		//log.debug "new mode for ${deviceName} is ${newMode}"
+		if (newMode != device.currentValue(deviceName)){
+    		def evt1 = createEvent(name: deviceName, value: newMode, descriptionText: "${deviceName} turned ${newMode}", displayed: true)
+    		result << evt1
+         	log.debug "${deviceName} changed from ${device.currentValue(deviceName)} to $newMode"
 
-
-//log.trace deviceName+deviceSetting
-//log.trace newSetting
-}
-//log.debug "Is this Displayed? ${displayyesno}"
-
-    	def evt1 = createEvent(name: deviceName+deviceSetting, value: newSetting, descriptionText: "${deviceName+deviceSetting} set to ${newSetting}", displayed: displayyesno)
-   
-     	result << evt1
-  }
-}
-def lights = '| He | So | Se |'
-//log.debug body["heaterstate"]["mode"]
-if (body["heaterstate"]["mode"] == 'off'){
-	lights = lights.replaceAll('He','   ')
-}
-if (body["solarstate"]["mode"] == 'off'){
-	lights = lights.replaceAll('So','   ')
-}
-if (body["servicemode"]["mode"] == 'off'){
-	lights = lights.replaceAll('Se','   ')
-result << createEvent(name: "servicemode", value: "off")
-}else {
-result << createEvent(name: "servicemode", value: "on"
-)
-}
-log.debug "Lights: $lights"
-result << createEvent(name: 'lights', value: lights)
-
-
-// result << createEvent(name: "pooltemp", value: 77, descriptionText: "pool temp turned 77", displayed: true)
-
+    	}
+    }
+        
+	['pool', 'spa'].each { deviceName ->
+ 		['settemp', 'currenttemp', 'heatmode'].each { deviceSetting ->
+    		def newSetting = body[deviceName][deviceSetting]
+        	def displayyesno = true
+			//log.debug "old ${deviceSetting} for ${deviceName} is ${device.currentValue(deviceName+deviceSetting)}"
+    		//log.trace body[deviceName]["mode"]	
+			//log.debug "new ${deviceSetting} for ${deviceName} is ${newSetting}"
+			if (deviceSetting == "currenttemp"){
+            	displayyesno = false
+				sendEvent(name: "temperature",
+            	value:  newSetting,
+            	unit:   getTemperatureScale(),)
+				//log.trace deviceName+deviceSetting
+				//log.trace newSetting
+			}
+			//log.debug "Is this Displayed? ${displayyesno}"
+    		def evt1 = createEvent(name: deviceName+deviceSetting, value: newSetting, descriptionText: "${deviceName+deviceSetting} set to ${newSetting}", displayed: displayyesno)
+     		result << evt1
+  		}
+	}
+	def lights = '| He | So | Se |'
+	//log.debug body["heaterstate"]["mode"]
+	if (body["heaterstate"]["mode"] == 'off'){
+		lights = lights.replaceAll('He','   ')
+	}
+	if (body["solarstate"]["mode"] == 'off'){
+		lights = lights.replaceAll('So','   ')
+	}
+	if (body["servicemode"]["mode"] == 'off'){
+		lights = lights.replaceAll('Se','   ')
+		result << createEvent(name: "servicemode", value: "off")
+	}else {
+		result << createEvent(name: "servicemode", value: "on")
+	}
+	log.debug "Lights: $lights"
+	result << createEvent(name: 'lights', value: lights)
+	// result << createEvent(name: "pooltemp", value: 77, descriptionText: "pool temp turned 77", displayed: true)
+    return result
  	}
-//    sendEvent(name:"temperature", value: device.poolcurrenttemp) 
-
-//    result
 }
-
 private getCallBackAddress() {
  	device.hub.getDataValue("localIP") + ":" + device.hub.getDataValue("localSrvPortTCP")
 }
@@ -609,7 +602,7 @@ log.debug "Executing 'off' for device: " + compdevice
 }
 
 private subscribeAction(path, callbackPath="") {
-    log.trace "subscribe($path, $callbackPath)"
+    log.info "subscribe($path, $callbackPath)"
     def address = getCallBackAddress() // gets the hub address : port
     def ip = getHostAddress() // gets the device address
 
