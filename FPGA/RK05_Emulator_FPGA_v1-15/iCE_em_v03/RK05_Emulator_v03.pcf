@@ -1,0 +1,112 @@
+# ##############################################################################
+# RK05 Emulator PCF
+# Version:            v00
+# File Generated:     Mar 25 2024
+# Family & Device:    iCE40HX1K
+# Package:            TQ144
+# ##############################################################################
+###IOSet List 88
+#
+set_io BUS_RK11D_L 98
+set_io BUS_SEL_DR_L[0] 101
+set_io BUS_SEL_DR_L[1] 102
+set_io BUS_SEL_DR_L[2] 104
+set_io BUS_SEL_DR_L[3] 105
+set_io BUS_CYL_ADD_L[0] 136
+set_io BUS_CYL_ADD_L[1] 122
+set_io BUS_CYL_ADD_L[2] 137
+set_io BUS_CYL_ADD_L[3] 121
+set_io BUS_CYL_ADD_L[4] 129
+set_io BUS_CYL_ADD_L[5] 135
+set_io BUS_CYL_ADD_L[6] 128
+set_io BUS_CYL_ADD_L[7] 134
+set_io BUS_STROBE_L 88
+set_io BUS_HEAD_SELECT_L 93
+set_io BUS_WT_PROTECT_L 94
+set_io BUS_WT_DATA_CLK_L 99
+set_io BUS_WT_GATE_L 91
+set_io BUS_RESTORE_L 97
+set_io BUS_RD_GATE_L 90
+#
+set_io BUS_FILE_READY_L 62
+set_io BUS_RWS_RDY_L 107
+set_io BUS_ADDRESS_ACCEPTED_L 106
+set_io BUS_ADDRESS_INVALID_L 95
+set_io BUS_SEEK_INCOMPLETE_L 96
+set_io BUS_WT_PROT_STATUS_L 61
+set_io BUS_WT_CHK_L 80
+set_io BUS_RD_DATA_L 58
+set_io BUS_RD_CLK_L 56
+set_io BUS_SEC_CNTR_L[0] 79
+set_io BUS_SEC_CNTR_L[1] 52
+set_io BUS_SEC_CNTR_L[2] 63
+set_io BUS_SEC_CNTR_L[3] 81
+set_io BUS_SEC_PLS_L 64
+set_io BUS_INDX_PLS_L 78
+#set_io BUS_DC_LO_L 87
+set_io BUS_RK05_HIGH_DENSITY_L 60
+#
+set_io SDRAM_Address[0] 143
+set_io SDRAM_Address[1] 142
+set_io SDRAM_Address[2] 141
+set_io SDRAM_Address[3] 139
+set_io SDRAM_Address[4] 120
+set_io SDRAM_Address[5] 119
+set_io SDRAM_Address[6] 118
+set_io SDRAM_Address[7] 117
+set_io SDRAM_Address[8] 116
+set_io SDRAM_Address[9] 115
+set_io SDRAM_Address[10] 144
+set_io SDRAM_Address[11] 114
+set_io SDRAM_Address[12] 113
+set_io SDRAM_BS0 2
+set_io SDRAM_BS1 1
+set_io SDRAM_WE_n 9
+set_io SDRAM_CAS_n 8
+set_io SDRAM_RAS_n 4
+set_io SDRAM_CS_n 3
+set_io SDRAM_CLK 7
+set_io SDRAM_CKE 112
+set_io SDRAM_DQML 10
+set_io SDRAM_DQMH 23
+set_io SDRAM_DQ[0] 31
+set_io SDRAM_DQ[1] 28
+set_io SDRAM_DQ[2] 26
+set_io SDRAM_DQ[3] 22
+set_io SDRAM_DQ[4] 20
+set_io SDRAM_DQ[5] 19
+set_io SDRAM_DQ[6] 12
+set_io SDRAM_DQ[7] 11
+set_io SDRAM_DQ[8] 24
+set_io SDRAM_DQ[9] 25
+set_io SDRAM_DQ[10] 29
+set_io SDRAM_DQ[11] 32
+set_io SDRAM_DQ[12] 33
+set_io SDRAM_DQ[13] 34
+set_io SDRAM_DQ[14] 37
+set_io SDRAM_DQ[15] 38
+#
+set_io CPU_SPI_MISO 47
+set_io CPU_SPI_MOSI 48
+set_io CPU_SPI_CLK 49
+set_io CPU_SPI_CS_n 50
+#set_io CMD_INTERRUPT1 44 put back
+#set_io CPU_SPI_Reg_Select 45
+#
+set_io TESTER_OUTPUT_1_L 87
+set_io TESTER_OUTPUT_2_L 44
+set_io TESTER_OUTPUT_3_L 45
+#
+set_io FPANEL_WT_PROT_indicator 39
+set_io FPANEL_WT_indicator 41
+set_io FPANEL_RD_indicator 42
+set_io FPANEL_ON_CYL_indicator 43
+#
+set_io clock 21
+set_io pin_reset_n 138
+#
+set_io Servo_Pulse_FPGA_pin 73
+set_io SPARE_PIO1_24 74
+set_io SELECTED_RDY_LED_N 75
+set_io CMD_INTERRUPT 76
+#put back pin 76
