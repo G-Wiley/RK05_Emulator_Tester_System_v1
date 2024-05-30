@@ -2,7 +2,7 @@
 RK05 Files<p>
 The rk05 files in this folder can be copied to a microSD card that the emulator will load. When the RUN/LOAD switch is toggled to the RUN position, the emulator loads the first rk05 file that it finds on the microSD card.<p>
 
-Tom Hunter wrote a very nice set of utilities, in the RK05_Ruilities folder, to convert between rk05 files and SIMH files. This allows images to be created using SIMH and then saved and copied to an RK05 emulator.<p>
+Tom Hunter wrote a very nice set of utilities, in the <b>RK05_Ruilities</b> folder, to convert between rk05 files and SIMH files. This allows images to be created using SIMH and then saved and copied to an RK05 emulator.<p>
 
 os8.rk05 is a bootable image of OS8<p>
 
